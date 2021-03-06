@@ -1,0 +1,24 @@
+name: TaoVPS
+
+on: 
+  workflow_dispatch:
+    inputs:
+      authcode:
+        description: '& "${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe" --code="4/0AY0e-g5cTWAosMEChDU2qE2oAiRyHYlclTi01HuyjbmNF0LJr1ibUISkcfnz58fIxRSb0g" --redirect-url="https://remotedesktop.google.com/_/oauthredirect" --name=$Env:COMPUTERNAME'
+        required: true
+      pincode:
+        description: '111222'
+        required: true
+  
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Initializing Setup
+      run: ./caidat.ps1
+    - name: Khởi động VPS
+      run: ${{ github.event.inputs.authcode }} -pin=${{ github.event.inputs.pincode }}
+    - name: Keep Alive
+      run: ./time.ps1
